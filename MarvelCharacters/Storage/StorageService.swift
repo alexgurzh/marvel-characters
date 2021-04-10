@@ -10,8 +10,8 @@ protocol ViewModel {
 }
 
 protocol StorageService {
-	func fetch(_ type: ViewModel.Type, by id: Int) -> ViewModel?
-	func subscribe(_ type: ViewModel.Type, handler: @escaping StorageSubscriptionHandler)
+	func fetch(_ vmType: ViewModel.Type, by id: Int) -> ViewModel?
+	func subscribe(_ vmType: ViewModel.Type, handler: @escaping StorageSubscriptionHandler)
 	func save(models: [Decodable])
 	func save(model: Decodable)
 	func deleteAll()

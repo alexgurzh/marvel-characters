@@ -13,20 +13,20 @@ final class RealmService {
 }
 
 extension RealmService: StorageService {
-	func fetch(_ type: ViewModel.Type, by id: Int) -> ViewModel? {
-		switch type {
+	func fetch(_ vmType: ViewModel.Type, by id: Int) -> ViewModel? {
+		switch vmType {
 		case is CharacterViewModel.Type, is CharacterDetailsViewModel.Type:
 			guard let entity = realm.objects(MarvelCharacterEntity.self).filter("id == \(id)").first else {
 				return nil
 			}
-			return characterViewModel(type, from: entity)
+			return characterViewModel(vmType, from: entity)
 		default:
 			fatalError("Unknown ViewModel.Type")
 		}
 	}
 
-	func subscribe(_ type: ViewModel.Type, handler: @escaping StorageSubscriptionHandler) {
-		switch type {
+	func subscribe(_ vmType: ViewModel.Type, handler: @escaping StorageSubscriptionHandler) {
+		switch vmType {
 		case is CharacterViewModel.Type:
 			let token = subscribeCharacters(handler: handler)
 			notificationTokens.append(token)
