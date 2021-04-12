@@ -1,5 +1,5 @@
 //
-//  NetworkServiceProtocol.swift
+//  NetworkService.swift
 //  MarvelCharacters
 //
 //  Created by Alexander Gurzhiev on 09.04.2021.
@@ -7,7 +7,7 @@
 
 typealias RequestCompletion = (Result<MarvelResponse.DataContainer, Error>) -> Void
 
-protocol NetworkServiceProtocol {
+protocol NetworkService {
 	func load(search: String?, completion: @escaping RequestCompletion)
 	func reset()
 }

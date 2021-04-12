@@ -34,7 +34,7 @@ final class MarvelAPIService {
 	}
 }
 
-extension MarvelAPIService: NetworkServiceProtocol {
+extension MarvelAPIService: NetworkService {
 	func load(search: String?, completion: @escaping RequestCompletion) {
 		guard !loadInProgress else {
 			return
