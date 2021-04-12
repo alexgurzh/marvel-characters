@@ -121,5 +121,39 @@ class CharactersInteractorTests: XCTestCase {
 		XCTAssertNil(viewModel)
 	}
 
-	// TODO: Test subscribtions
+	func testSubscribe() throws {
+		// arrange
+		let expectModels: [CharacterViewModel] = [
+			.init(id: 0, name: "test0", avatar: nil),
+			.init(id: 1, name: "test1", avatar: nil),
+			.init(id: 2, name: "test2", avatar: nil)
+		]
+		storageService.viewModels = expectModels
+		let expectUpdates: [DataUpdate] = [
+			.init(indexes: [1, 2], action: .insert)
+		]
+		storageService.updatesForViewModels = expectUpdates
+		let expectation = XCTestExpectation()
+
+		// act
+		var resultModels: [ViewModel] = []
+		var resultUpdates: [DataUpdate] = []
+		sut.subscribe { (models, updates) in
+			resultModels.append(contentsOf: models)
+			resultUpdates.append(contentsOf: updates)
+			expectation.fulfill()
+		}
+
+		// assert
+		wait(for: [expectation], timeout: 0.1)
+		XCTAssertEqual(expectModels.count, resultModels.count)
+		let resultCharacterModels = try XCTUnwrap(resultModels as? [CharacterViewModel])
+		for expectModel in expectModels {
+			XCTAssertTrue(resultCharacterModels.contains(where: { $0.id == expectModel.id && $0.name == expectModel.name }))
+		}
+		XCTAssertEqual(expectUpdates.count, resultUpdates.count)
+		for expectUpdate in expectUpdates {
+			XCTAssertTrue(resultUpdates.contains(where: { $0.action == expectUpdate.action && $0.indexes == expectUpdate.indexes }))
+		}
+	}
 }
