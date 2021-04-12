@@ -8,8 +8,13 @@
 import Foundation
 
 struct CharactersInteractor {
-	private let networkService: NetworkService = MarvelAPIService()
-	private let storageService: StorageService = RealmService()
+	private let networkService: NetworkService
+	private let storageService: StorageService
+
+	init(networkService: NetworkService = MarvelAPIService(), storageService: StorageService = RealmService()) {
+		self.networkService = networkService
+		self.storageService = storageService
+	}
 
 	func load(search: String? = nil, fromStart: Bool = false, completion: (() -> Void)? = nil) {
 		if fromStart {
